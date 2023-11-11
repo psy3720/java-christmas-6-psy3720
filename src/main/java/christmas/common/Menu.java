@@ -5,6 +5,10 @@ import static christmas.common.FoodType.DESERT;
 import static christmas.common.FoodType.DRINK;
 import static christmas.common.FoodType.MAIN;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 public enum Menu {
     MUSHROOM_SOUP("양송이 스프", 6000, APPETIZER),
     TAPAS("타파스", 5500, APPETIZER),
@@ -27,5 +31,24 @@ public enum Menu {
         this.name = name;
         this.price = price;
         this.foodType = foodType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static Menu of(String name) {
+        return Arrays.stream(Menu.values())
+                .filter(menu -> Objects.equals(name, menu.getName()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException());
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public FoodType getFoodType() {
+        return foodType;
     }
 }
