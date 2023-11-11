@@ -6,7 +6,6 @@ import static christmas.common.FoodType.DRINK;
 import static christmas.common.FoodType.MAIN;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public enum Menu {
@@ -41,7 +40,7 @@ public enum Menu {
         return Arrays.stream(Menu.values())
                 .filter(menu -> Objects.equals(name, menu.getName()))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElse(null);
     }
 
     public int getPrice() {

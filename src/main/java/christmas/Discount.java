@@ -1,14 +1,12 @@
 package christmas;
 
-import christmas.dto.OrderItems;
+import christmas.domain.OrderItems;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 
 public class Discount {
-    public int getChristmasDDayDiscount(int day, OrderItems orderItems) {
-        int amount = orderItems.getTotalAmount();
-
+    public int getChristmasDDayDiscount(int day, OrderItems orderItems, int amount) {
         final int start_discount_amount = 1000;
         final int discountPerDay = 100;
 
@@ -20,8 +18,7 @@ public class Discount {
         return amount;
     }
 
-    public int getWeekdayDiscount(int day, OrderItems orderItems) {
-        int amount = orderItems.getTotalAmount();
+    public int getWeekdayDiscount(int day, OrderItems orderItems, int amount) {
         LocalDate date = LocalDate.of(2023, 12, day);
 
         final int DISCOUNT_AMOUNT = 2023;
@@ -34,8 +31,7 @@ public class Discount {
         return amount;
     }
 
-    public int getWeekendDiscount(int day, OrderItems orderItems) {
-        int amount = orderItems.getTotalAmount();
+    public int getWeekendDiscount(int day, OrderItems orderItems, int amount) {
         LocalDate date = LocalDate.of(2023, 12, day);
 
         final int DISCOUNT_AMOUNT = 2023;
@@ -47,9 +43,8 @@ public class Discount {
         return amount;
     }
 
-    public int getSpecialDiscount(int day, OrderItems orderItems) {
+    public int getSpecialDiscount(int day, OrderItems orderItems, int amount) {
         int[] specialDays = new int[] {3, 10, 17, 24, 25, 31};
-        int amount = orderItems.getTotalAmount();
 
         if(Arrays.stream(specialDays).anyMatch(value -> day == value)) {
             amount = amount - 1000;

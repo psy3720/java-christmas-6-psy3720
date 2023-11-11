@@ -10,45 +10,50 @@ import static christmas.view.output.OutputMessage.TOTAL_BENEFIT_AMOUNT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT;
 
 import christmas.dto.BenefitDetails;
-import christmas.dto.Order;
-import christmas.dto.OrderItems;
+import christmas.dto.OrderResponse;
+import christmas.domain.OrderItems;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class OutputView {
-    public void printOrder(Order order) {
+    public void printOrder(OrderResponse orderResponse) {
         System.out.println(EVENT_PREVIEW_MESSAGE.getMessage());
         System.out.println();
 
-        printOrderMenu(order);
-        printTotalOrderAmount(order);
-        printGiftMenu(order);
-        printBenefitHistory(order);
-        printTotalBenefitAmount(order);
-        printFinalPaymentAmount(order);
-        printEventBadge(order);
+        printOrderMenu(orderResponse);
+        printTotalOrderAmount(orderResponse);
+        printGiftMenu(orderResponse);
+        printBenefitHistory(orderResponse);
+        printTotalBenefitAmount(orderResponse);
+        printFinalPaymentAmount(orderResponse);
+        printEventBadge(orderResponse);
     }
 
-    private void printEventBadge(Order order) {
+    private void printEventBadge(OrderResponse orderResponse) {
         System.out.println(EVENT_BADGE.getMessage());
-        System.out.println(order.getEventBadge().getName());
+        String badge = "없음";
+        if (!Objects.isNull(orderResponse.getEventBadge())) {
+            badge = orderResponse.getEventBadge().getName();
+        }
+        System.out.println(badge);
         System.out.println();
     }
 
-    private void printFinalPaymentAmount(Order order) {
+    private void printFinalPaymentAmount(OrderResponse orderResponse) {
         System.out.println(FINAL_PAYMENT_AMOUNT.getMessage());
-        System.out.println(order.getFinalPaymentAmount());
+        System.out.println(orderResponse.getFinalPaymentAmount());
         System.out.println();
     }
 
-    private void printTotalBenefitAmount(Order order) {
+    private void printTotalBenefitAmount(OrderResponse orderResponse) {
         System.out.println(TOTAL_BENEFIT_AMOUNT.getMessage());
-        System.out.printf("%s원\n", order.getBenefitDetails().getTotalBenefitAmount());
+        System.out.printf("%s원\n", orderResponse.getBenefitDetails().getTotalBenefitAmount());
         System.out.println();
     }
 
-    private void printBenefitHistory(Order order) {
+    private void printBenefitHistory(OrderResponse orderResponse) {
         System.out.println(BENEFIT_HISTORY.getMessage());
-        BenefitDetails benefitDetails = order.getBenefitDetails();
+        BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
 
         boolean isBenefit = false;
         if (benefitDetails.getChristmasDDayDiscount() > 0) {
@@ -67,28 +72,28 @@ public class OutputView {
         System.out.println();
     }
 
-    private void printGiftMenu(Order order) {
+    private void printGiftMenu(OrderResponse orderResponse) {
         System.out.println(GIFT_MENU.getMessage());
 
         String giftMenu = "없음";
 
-        if (order.getGiftMenu()) {
+        if (orderResponse.getGiftMenu()) {
             giftMenu = "샴페인 1개";
         }
         System.out.println(giftMenu);
         System.out.println();
     }
 
-    private void printTotalOrderAmount(Order order) {
+    private void printTotalOrderAmount(OrderResponse orderResponse) {
         System.out.println(TOTAL_ORDER_AMOUNT.getMessage());
         DecimalFormat df = new DecimalFormat("###,###원");
-        System.out.println(df.format(order.getTotalOrderAmount()));
+        System.out.println(df.format(orderResponse.getTotalOrderAmount()));
         System.out.println();
     }
 
-    private void printOrderMenu(Order order) {
+    private void printOrderMenu(OrderResponse orderResponse) {
         System.out.println(ORDER_MENU.getMessage());
-        OrderItems orderMenus = order.getOrderMenus();
+        OrderItems orderMenus = orderResponse.getOrderMenus();
 
         orderMenus.getOrderMenus().stream()
                 .forEach(orderMenuQuantity -> System.out.printf("%s %s개\n", orderMenuQuantity.getMenuName(),

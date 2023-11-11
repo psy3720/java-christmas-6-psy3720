@@ -2,10 +2,9 @@ package christmas.service;
 
 import christmas.Discount;
 import christmas.common.EventBadge;
+import christmas.domain.OrderItems;
 import christmas.dto.BenefitDetails;
-import christmas.dto.Order;
-import christmas.dto.OrderItems;
-import christmas.dto.OrderRequest;
+import christmas.dto.OrderResponse;
 
 public class OrderProcessor {
     private final Discount discount;
@@ -14,15 +13,23 @@ public class OrderProcessor {
         this.discount = new Discount();
     }
 
-    public Order order(OrderRequest orderRequest) {
-        OrderItems orderMenuAndAmount = orderRequest.getOrderMenuAndAmount();
+    private BenefitDetails benefitCalculate(int day, OrderItems orderItems) {
+        int amount = orderItems.getTotalAmount();
 
-        boolean isGiftMenu = false;
-        if (orderMenuAndAmount.getTotalAmount() >= 120000) {
-            isGiftMenu = true;
-        }
+        amount = discount.getChristmasDDayDiscount(day, orderItems, amount);
 
-        return new Order(orderMenuAndAmount, isGiftMenu, EventBadge.getBadgeBenefitAmount(5000)
-                , new BenefitDetails(0, 0, 0, 0));
+        return new BenefitDetails(0, 0, 0, 0);
+    }
+
+    public OrderResponse order(int day, OrderItems orderItems) {
+        BenefitDetails benefitDetails = benefitCalculate(day, orderItems);
+        boolean isGiftMenu = isGiftMenu(orderItems);
+
+        EventBadge eventBadge = EventBadge.getBadgeBenefitAmount(benefitDetails.getTotalBenefitAmount());
+        return new OrderResponse(orderItems, isGiftMenu, eventBadge, benefitDetails);
+    }
+
+    private static boolean isGiftMenu(OrderItems orderItems) {
+        return orderItems.getTotalAmount() >= 120000;
     }
 }

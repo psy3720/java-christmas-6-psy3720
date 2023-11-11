@@ -3,8 +3,8 @@ package christmas;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import christmas.common.Menu;
-import christmas.dto.OrderItems;
-import christmas.dto.OrderMenuQuantity;
+import christmas.domain.OrderItems;
+import christmas.domain.OrderMenuQuantity;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

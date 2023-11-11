@@ -1,14 +1,15 @@
 package christmas.dto;
 
 import christmas.common.EventBadge;
+import christmas.domain.OrderItems;
 
-public class Order {
-    private OrderItems orderMenus; // 주문메뉴
-    private Boolean isGiftMenu; // 증정메뉴 여부
-    private BenefitDetails benefitDetails; // 혜택 내역
-    private EventBadge eventBadge; // 12월 산타이벤트 뱃지
+public class OrderResponse {
+    private OrderItems orderMenus;
+    private Boolean isGiftMenu;
+    private BenefitDetails benefitDetails;
+    private EventBadge eventBadge;
 
-    public Order(OrderItems orderMenus, boolean isGiftMenu, EventBadge eventBadge, BenefitDetails benefitDetails) {
+    public OrderResponse(OrderItems orderMenus, boolean isGiftMenu, EventBadge eventBadge, BenefitDetails benefitDetails) {
         this.orderMenus = orderMenus;
         this.eventBadge = eventBadge;
         this.benefitDetails = benefitDetails;

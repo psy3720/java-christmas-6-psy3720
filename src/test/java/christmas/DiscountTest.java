@@ -6,7 +6,7 @@ import static christmas.common.Menu.T_BONE_STEAK;
 import static christmas.common.Menu.ZERO_COLA;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import christmas.dto.OrderItems;
+import christmas.domain.OrderItems;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class DiscountTest {
 
         int day = 1;
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,제로콜라-1");
-        int discountAmount = discount.getChristmasDDayDiscount(day, orderItems);
+        int discountAmount = discount.getChristmasDDayDiscount(day, orderItems, TAPAS.getPrice() + ZERO_COLA.getPrice());
 
         assertThat(discountAmount).isEqualTo(TAPAS.getPrice() + ZERO_COLA.getPrice() - 1000);
     }
@@ -32,7 +32,7 @@ public class DiscountTest {
         int day = 4;
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1");
 
-        int discountAmount = discount.getWeekdayDiscount(day, orderItems);
+        int discountAmount = discount.getWeekdayDiscount(day, orderItems, TAPAS.getPrice() + CHOCO_CAKE.getPrice());
 
         assertThat(discountAmount).isEqualTo(TAPAS.getPrice() + CHOCO_CAKE.getPrice() - 2023);
     }
@@ -45,7 +45,9 @@ public class DiscountTest {
         int day = 1;
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1,티본스테이크-2");
 
-        int discountAmount = discount.getWeekendDiscount(day, orderItems);
+        int discountAmount = discount.getWeekendDiscount(day, orderItems, TAPAS.getPrice() +
+                CHOCO_CAKE.getPrice() +
+                (T_BONE_STEAK.getPrice() * 2));
 
         assertThat(discountAmount)
                 .isEqualTo(
@@ -63,7 +65,9 @@ public class DiscountTest {
         int day = 25;
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1,티본스테이크-2");
 
-        int discountAmount = discount.getSpecialDiscount(day, orderItems);
+        int discountAmount = discount.getSpecialDiscount(day, orderItems, TAPAS.getPrice() +
+                CHOCO_CAKE.getPrice() +
+                (T_BONE_STEAK.getPrice() * 2));
 
         assertThat(discountAmount).isEqualTo(
                 TAPAS.getPrice() +
