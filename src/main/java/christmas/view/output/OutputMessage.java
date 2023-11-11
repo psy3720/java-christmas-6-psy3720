@@ -1,6 +1,7 @@
 package christmas.view.output;
 
 public enum OutputMessage {
+    EVENT_PREVIEW_MESSAGE("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!"),
     ORDER_MENU("<주문 메뉴>"),
     TOTAL_ORDER_AMOUNT("<할인 전 총주문 금액>"),
     GIFT_MENU("<증정 메뉴>"),
@@ -15,7 +16,7 @@ public enum OutputMessage {
         this.message = message;
     }
 
-    public String getTitle() {
+    public String getMessage() {
         return message;
     }
 }

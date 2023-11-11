@@ -10,4 +10,8 @@ public enum InputMessage {
     }
 
     String message;
+
+    public String getMessage() {
+        return message;
+    }
 }

@@ -13,17 +13,22 @@ public class ChristmasPromotion {
     private final InputView inputView;
     private final OrderProcessor orderProcessor;
 
-    public ChristmasPromotion(OutputView outputView, InputView inputView, OrderProcessor orderProcessor) {
-        this.outputView = outputView;
-        this.inputView = inputView;
-        this.orderProcessor = orderProcessor;
+    public ChristmasPromotion() {
+        this.outputView = new OutputView();
+        this.inputView = new InputView();
+        this.orderProcessor = new OrderProcessor();
     }
 
-    public Order order() {
+    public void order() {
         int day = inputView.readDate();
         String orderMenuAndAmount = inputView.readOrderMenuAndAmount();
         OrderItems orderItems = OrderItems.createOrderItems(orderMenuAndAmount);
 
-        return orderProcessor.order(createOrderRequest(day, orderItems));
+        Order order = orderProcessor.order(createOrderRequest(day, orderItems));
+        printResult(order);
+    }
+
+    private void printResult(Order order) {
+        outputView.printOrder(order);
     }
 }

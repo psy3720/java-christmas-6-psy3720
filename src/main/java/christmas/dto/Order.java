@@ -1,30 +1,41 @@
 package christmas.dto;
 
-import christmas.common.Badge;
-import christmas.common.Menu;
-import java.util.List;
-import java.util.Map;
+import christmas.common.EventBadge;
 
 public class Order {
-    private final OrderItems orderMenus; // 주문메뉴
-    private final int totalOrderAmount; // 할인전 총 주문 금액
-    private final Badge badge; // 12월 산타이벤트 뱃지
+    private OrderItems orderMenus; // 주문메뉴
+    private Boolean isGiftMenu; // 증정메뉴 여부
+    private BenefitDetails benefitDetails; // 혜택 내역
+    private EventBadge eventBadge; // 12월 산타이벤트 뱃지
 
-    public Order(OrderItems orderMenus, int totalOrderAmount, Badge badge) {
+    public Order(OrderItems orderMenus, boolean isGiftMenu, EventBadge eventBadge, BenefitDetails benefitDetails) {
         this.orderMenus = orderMenus;
-        this.totalOrderAmount = totalOrderAmount;
-        this.badge = badge;
+        this.eventBadge = eventBadge;
+        this.benefitDetails = benefitDetails;
+        this.isGiftMenu = isGiftMenu;
     }
 
-    public List<Map<Menu, Integer>> getOrderMenus() {
-        return null;
+    public OrderItems getOrderMenus() {
+        return orderMenus;
+    }
+
+    public Boolean getGiftMenu() {
+        return isGiftMenu;
+    }
+
+    public BenefitDetails getBenefitDetails() {
+        return benefitDetails;
+    }
+
+    public EventBadge getEventBadge() {
+        return eventBadge;
     }
 
     public int getTotalOrderAmount() {
-        return 0;
+        return orderMenus.getTotalAmount();
     }
 
-    public Badge getBadge() {
-        return null;
+    public int getFinalPaymentAmount() {
+        return orderMenus.getTotalAmount() + benefitDetails.getTotalBenefitAmount();
     }
 }

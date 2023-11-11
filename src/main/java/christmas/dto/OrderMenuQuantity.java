@@ -12,6 +12,10 @@ public class OrderMenuQuantity {
         this.menu = menu;
     }
 
+    public String getMenuName() {
+        return menu.getName();
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -23,7 +27,6 @@ public class OrderMenuQuantity {
     public boolean isDesertMenu() {
         return menu.getFoodType() == FoodType.DESERT;
     }
-
 
     public boolean isMainMenu() {
         return menu.getFoodType() == FoodType.MAIN;
