@@ -1,9 +1,9 @@
-package christmas;
+package christmas.common;
 
-import static christmas.FoodType.APPETIZER;
-import static christmas.FoodType.DESERT;
-import static christmas.FoodType.DRINK;
-import static christmas.FoodType.MAIN;
+import static christmas.common.FoodType.APPETIZER;
+import static christmas.common.FoodType.DESERT;
+import static christmas.common.FoodType.DRINK;
+import static christmas.common.FoodType.MAIN;
 
 public enum Menu {
     MUSHROOM_SOUP("양송이 스프", 6000, APPETIZER),

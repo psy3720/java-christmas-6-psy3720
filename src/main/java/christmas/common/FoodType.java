@@ -1,4 +1,4 @@
-package christmas;
+package christmas.common;
 
 public enum FoodType {
     MAIN("메인"),

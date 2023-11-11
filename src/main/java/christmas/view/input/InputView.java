@@ -14,7 +14,7 @@ public class InputView {
         return Integer.parseInt(input);
     }
 
-    public String readOrder() {
+    public String readOrderMenuAndAmount() {
         System.out.println(PLACE_ORDER);
         String input = Console.readLine();
         return input;
