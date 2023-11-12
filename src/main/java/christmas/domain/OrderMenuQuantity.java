@@ -51,4 +51,8 @@ public class OrderMenuQuantity {
     public boolean isMainMenu() {
         return menu.getFoodType() == FoodType.MAIN;
     }
+
+    public boolean equalsMenuName(String name) {
+        return Objects.equals(menu.getName(), name);
+    }
 }

@@ -18,7 +18,7 @@ import java.util.Objects;
 public class OutputView {
     public void printOrder(OrderResponse orderResponse) {
         System.out.println(EVENT_PREVIEW_MESSAGE.getMessage());
-        System.out.println();
+        printEmptyLine();
 
         printOrderMenu(orderResponse);
         printTotalOrderAmount(orderResponse);
@@ -29,6 +29,10 @@ public class OutputView {
         printEventBadge(orderResponse);
     }
 
+    private static void printEmptyLine() {
+        System.out.println();
+    }
+
     private void printEventBadge(OrderResponse orderResponse) {
         System.out.println(EVENT_BADGE.getMessage());
         String badge = "없음";
@@ -36,19 +40,19 @@ public class OutputView {
             badge = orderResponse.getEventBadge().getName();
         }
         System.out.println(badge);
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printFinalPaymentAmount(OrderResponse orderResponse) {
         System.out.println(FINAL_PAYMENT_AMOUNT.getMessage());
         System.out.println(orderResponse.getFinalPaymentAmount());
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printTotalBenefitAmount(OrderResponse orderResponse) {
         System.out.println(TOTAL_BENEFIT_AMOUNT.getMessage());
         System.out.printf("%s원\n", orderResponse.getBenefitDetails().getTotalBenefitAmount());
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printBenefitHistory(OrderResponse orderResponse) {
@@ -69,7 +73,7 @@ public class OutputView {
         if (!isBenefit) {
             System.out.println("없음");
         }
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printGiftMenu(OrderResponse orderResponse) {
@@ -81,14 +85,14 @@ public class OutputView {
             giftMenu = "샴페인 1개";
         }
         System.out.println(giftMenu);
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printTotalOrderAmount(OrderResponse orderResponse) {
         System.out.println(TOTAL_ORDER_AMOUNT.getMessage());
         DecimalFormat df = new DecimalFormat("###,###원");
         System.out.println(df.format(orderResponse.getTotalOrderAmount()));
-        System.out.println();
+        printEmptyLine();
     }
 
     private void printOrderMenu(OrderResponse orderResponse) {
@@ -98,6 +102,6 @@ public class OutputView {
         orderMenus.getOrderMenus().stream()
                 .forEach(orderMenuQuantity -> System.out.printf("%s %s개\n", orderMenuQuantity.getMenuName(),
                         orderMenuQuantity.getQuantity()));
-        System.out.println();
+        printEmptyLine();
     }
 }

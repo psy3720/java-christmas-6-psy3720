@@ -81,4 +81,14 @@ public class OrderItemsTest {
                 .isInstanceOf(InputValidationException.class)
                 .hasMessageContaining(ErrorMessages.INVALID_ORDER_ERROR.getMessage());
     }
+
+    @DisplayName("[에러] 중복메뉴를 입력한 경우 에러가 발생한다.")
+    @Test
+    void inputValidate_duplicate() {
+        String input = "시저샐러드-1,시저샐러드-1";
+
+        assertThatThrownBy(() -> OrderItems.createOrderItems(input))
+                .isInstanceOf(InputValidationException.class)
+                .hasMessageContaining(ErrorMessages.INVALID_ORDER_ERROR.getMessage());
+    }
 }
