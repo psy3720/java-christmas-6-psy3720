@@ -1,7 +1,10 @@
 package christmas.controller;
 
+import static christmas.dto.request.OrderRequest.createOrderRequest;
+
 import christmas.domain.OrderItems;
-import christmas.dto.OrderResponse;
+import christmas.dto.request.OrderRequest;
+import christmas.dto.response.OrderResponse;
 import christmas.service.OrderProcessor;
 import christmas.view.input.InputView;
 import christmas.view.output.OutputView;
@@ -9,7 +12,6 @@ import christmas.view.output.OutputView;
 public class ChristmasPromotion {
     private final InputView inputView;
     private final OutputView outputView;
-
     private final OrderProcessor orderProcessor;
 
     public ChristmasPromotion() {
@@ -21,8 +23,9 @@ public class ChristmasPromotion {
     public void order() {
         int day = inputView.readDay();
         OrderItems orderItems = inputView.readOrderMenuAndAmount();
+        OrderRequest orderRequest = createOrderRequest(day, orderItems);
 
-        OrderResponse orderResponse = orderProcessor.order(day, orderItems);
+        OrderResponse orderResponse = orderProcessor.order(orderRequest);
         printResult(orderResponse);
     }
 

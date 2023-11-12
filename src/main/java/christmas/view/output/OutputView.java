@@ -9,8 +9,8 @@ import static christmas.view.output.OutputMessage.ORDER_MENU;
 import static christmas.view.output.OutputMessage.TOTAL_BENEFIT_AMOUNT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT;
 
-import christmas.dto.BenefitDetails;
-import christmas.dto.OrderResponse;
+import christmas.dto.response.BenefitDetails;
+import christmas.dto.response.OrderResponse;
 import christmas.domain.OrderItems;
 import java.text.DecimalFormat;
 import java.util.Objects;

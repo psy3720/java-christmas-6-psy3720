@@ -1,4 +1,4 @@
-package christmas.dto;
+package christmas.dto.response;
 
 import christmas.common.EventBadge;
 import christmas.domain.OrderItems;

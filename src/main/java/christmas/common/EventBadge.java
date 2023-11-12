@@ -1,13 +1,12 @@
 package christmas.common;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public enum EventBadge {
-
-    STAR(5000, "별"),
+    SANTA(20000, "산타"),
     TREE(10000, "트리"),
-    SANTA(20000, "산타");
+    STAR(5000, "별"),
+    NONE(0, "없음");
 
     private final int benefitAmount;
     private final String name;
@@ -22,14 +21,9 @@ public enum EventBadge {
     }
 
     public static EventBadge getBadgeBenefitAmount(int benefitAmount) {
-        EventBadge[] values = values();
-        Arrays.sort(values, Comparator.reverseOrder());
-
-        for(EventBadge eventBadge : values) {
-            if(benefitAmount >= eventBadge.benefitAmount) {
-                return eventBadge;
-            }
-        }
-        return null;
+        return Arrays.stream(values())
+                .filter(eventBadge -> eventBadge.benefitAmount <= benefitAmount)
+                .findFirst()
+                .orElse(NONE);
     }
 }
