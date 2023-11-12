@@ -35,4 +35,8 @@ public class BenefitDetails {
     public int getTotalBenefitAmount() {
         return christmasDDayDiscount + weekdayDiscount + specialDiscount + giftEvent;
     }
+
+    public int getGiftEvent() {
+        return giftEvent;
+    }
 }

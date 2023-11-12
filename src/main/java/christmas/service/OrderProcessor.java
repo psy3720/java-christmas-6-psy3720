@@ -1,13 +1,13 @@
 package christmas.service;
 
-import christmas.domain.Discount;
 import christmas.common.EventBadge;
 import christmas.common.Menu;
+import christmas.domain.Discount;
 import christmas.domain.OrderItems;
-import christmas.dto.response.BenefitDetails;
 import christmas.dto.request.DiscountRequest;
-import christmas.dto.response.DiscountResponse;
 import christmas.dto.request.OrderRequest;
+import christmas.dto.response.BenefitDetails;
+import christmas.dto.response.DiscountResponse;
 import christmas.dto.response.OrderResponse;
 
 public class OrderProcessor {
@@ -34,7 +34,7 @@ public class OrderProcessor {
 
         int giftEventAmount = 0;
         if (isGiftMenu(orderItems)) {
-            giftEventAmount = Menu.CHAMPAGNE.getPrice();
+            giftEventAmount = Menu.CHAMPAGNE.getPrice() * -1;
         }
 
         DiscountResponse christmasDDayDiscount = discount.getChristmasDDayDiscount(

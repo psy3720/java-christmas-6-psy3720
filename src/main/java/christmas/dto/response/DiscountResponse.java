@@ -1,8 +1,8 @@
 package christmas.dto.response;
 
 public class DiscountResponse {
-    private int amount; // 할인전 총 주문 금액
-    private int discountAmount; // 할인 금액
+    private int amount;
+    private int discountAmount;
 
     public DiscountResponse(int amount, int discountAmount) {
         this.amount = amount;

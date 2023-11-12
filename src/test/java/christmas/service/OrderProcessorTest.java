@@ -1,0 +1,43 @@
+package christmas.service;
+
+import static christmas.common.Menu.BBQ_RIB;
+import static christmas.common.Menu.CHOCO_CAKE;
+import static christmas.common.Menu.T_BONE_STEAK;
+import static christmas.common.Menu.ZERO_COLA;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import christmas.domain.OrderItems;
+import christmas.dto.request.OrderRequest;
+import christmas.dto.response.BenefitDetails;
+import christmas.dto.response.OrderResponse;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class OrderProcessorTest {
+
+    @DisplayName("주문 시 할인과 증정 이벤트 적용 테스트")
+    @Test
+    void order() {
+        int day = 3;
+        String input = "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1";
+        OrderProcessor orderProcessor = new OrderProcessor();
+
+        OrderRequest request = new OrderRequest(day, OrderItems.createOrderItems(input));
+        OrderResponse response = orderProcessor.order(request);
+        BenefitDetails benefitDetails = response.getBenefitDetails();
+
+        int 할인_전_총주문_금액 = T_BONE_STEAK.getPrice() + BBQ_RIB.getPrice() +
+                (CHOCO_CAKE.getPrice() * 2) + ZERO_COLA.getPrice();
+        int 크리스마스_디데이_할인_금액 = -1200;
+        int 평일_할인_금액 = -4046;
+        int 특별_할인_금액 = -1000;
+        int 증정_이벤트_금액 = -25000;
+
+        assertThat(response.getTotalOrderAmount()).isEqualTo(할인_전_총주문_금액);
+        assertThat(response.getGiftMenu()).isTrue();
+        assertThat(benefitDetails.getChristmasDDayDiscount()).isEqualTo(크리스마스_디데이_할인_금액);
+        assertThat(benefitDetails.getWeekdayDiscount()).isEqualTo(평일_할인_금액);
+        assertThat(benefitDetails.getSpecialDiscount()).isEqualTo(특별_할인_금액);
+        assertThat(benefitDetails.getGiftEvent()).isEqualTo(증정_이벤트_금액);
+    }
+}

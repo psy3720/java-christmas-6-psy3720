@@ -1,8 +1,7 @@
-package christmas;
+package christmas.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import christmas.common.EventBadge;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,5 +35,15 @@ public class EventBadgeTest {
         EventBadge eventBadge = EventBadge.getBadgeBenefitAmount(benefitAmount);
 
         assertThat(eventBadge).isEqualTo(EventBadge.SANTA);
+    }
+
+    @DisplayName("혜택 금액이 없으면 없음을 반환한다.")
+    @Test
+    void getBadgeBenefitAmountNone() {
+        int benefitAmount = 0;
+
+        EventBadge eventBadge = EventBadge.getBadgeBenefitAmount(benefitAmount);
+
+        assertThat(eventBadge).isEqualTo(EventBadge.NONE);
     }
 }

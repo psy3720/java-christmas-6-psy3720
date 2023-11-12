@@ -9,7 +9,8 @@ public class OrderResponse {
     private BenefitDetails benefitDetails;
     private EventBadge eventBadge;
 
-    public OrderResponse(OrderItems orderMenus, boolean isGiftMenu, EventBadge eventBadge, BenefitDetails benefitDetails) {
+    public OrderResponse(OrderItems orderMenus, boolean isGiftMenu, EventBadge eventBadge,
+                         BenefitDetails benefitDetails) {
         this.orderMenus = orderMenus;
         this.eventBadge = eventBadge;
         this.benefitDetails = benefitDetails;

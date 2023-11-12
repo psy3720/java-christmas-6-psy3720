@@ -58,13 +58,13 @@ public class OrderItems {
         return orderMenus.stream()
                 .filter(OrderMenuQuantity::isDesertMenu)
                 .mapToInt(OrderMenuQuantity::getQuantity)
-                .reduce(1, (acc, value) -> acc * value);
+                .sum();
     }
 
     public int getMainMenuQuantity() {
         return orderMenus.stream()
                 .filter(OrderMenuQuantity::isMainMenu)
                 .mapToInt(OrderMenuQuantity::getQuantity)
-                .reduce(1, (acc, value) -> acc * value);
+                .sum();
     }
 }
