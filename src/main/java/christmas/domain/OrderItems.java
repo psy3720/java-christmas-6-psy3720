@@ -1,11 +1,14 @@
 package christmas.domain;
 
+import christmas.common.ErrorMessages;
+import christmas.exception.OrderQuantityExceededException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItems {
     public static final String MENU_SEPARATOR = ",";
     public static final String NAME_QUANTITY_SEPARATOR = "-";
+    public static final int MAX_ORDER_QUANTITY = 20;
 
     private final List<OrderMenuQuantity> orderMenus;
 
@@ -26,8 +29,8 @@ public class OrderItems {
                 .mapToInt(orderMenuQuantity -> orderMenuQuantity.getQuantity())
                 .sum();
 
-        if (totalOrderQuantity > 20) {
-            throw new IllegalArgumentException();
+        if (totalOrderQuantity > MAX_ORDER_QUANTITY) {
+            throw new OrderQuantityExceededException(ErrorMessages.ORDER_QUANTITY_EXCEEDED);
         }
     }
 

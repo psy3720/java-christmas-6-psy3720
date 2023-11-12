@@ -3,6 +3,8 @@ package christmas.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import christmas.common.ErrorMessages;
+import christmas.exception.InputValidationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +29,8 @@ public class OrderMenuQuantityTest {
         String quantity = "3a";
 
         assertThatThrownBy(() -> new OrderMenuQuantity(quantity, menu))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InputValidationException.class)
+                .hasMessageContaining(ErrorMessages.INVALID_ORDER_ERROR.getMessage());
     }
 
     @DisplayName("[에러] 주문수량을 잘못입력하면 에러가 발생한다.(음수)")
@@ -37,6 +40,7 @@ public class OrderMenuQuantityTest {
         String quantity = "-3";
 
         assertThatThrownBy(() -> new OrderMenuQuantity(quantity, menu))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InputValidationException.class)
+                .hasMessageContaining(ErrorMessages.INVALID_ORDER_ERROR.getMessage());
     }
 }

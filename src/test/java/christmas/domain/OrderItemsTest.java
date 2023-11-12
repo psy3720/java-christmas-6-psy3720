@@ -3,7 +3,10 @@ package christmas.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import christmas.common.ErrorMessages;
 import christmas.common.Menu;
+import christmas.exception.InputValidationException;
+import christmas.exception.OrderQuantityExceededException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +68,8 @@ public class OrderItemsTest {
         String input = "타파스-10,제로콜라-11";
 
         assertThatThrownBy(() -> OrderItems.createOrderItems(input))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(OrderQuantityExceededException.class)
+                .hasMessageContaining(ErrorMessages.ORDER_QUANTITY_EXCEEDED.getMessage());
     }
 
     @DisplayName("[에러] 입력한 메뉴 형식이 다른 경우 에러가 발생한다.(메뉴명-수량을 콤마로 구분하여 작성)")
@@ -74,6 +78,7 @@ public class OrderItemsTest {
         String input = "티본스테이크-4,  바비큐립-1";
 
         assertThatThrownBy(() -> OrderItems.createOrderItems(input))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InputValidationException.class)
+                .hasMessageContaining(ErrorMessages.INVALID_ORDER_ERROR.getMessage());
     }
 }

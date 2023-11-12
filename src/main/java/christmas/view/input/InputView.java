@@ -5,7 +5,9 @@ import static christmas.view.input.InputMessage.PLACE_ORDER;
 import static christmas.view.input.InputMessage.WELCOME;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.common.ErrorMessages;
 import christmas.domain.OrderItems;
+import christmas.exception.InputValidationException;
 import christmas.utils.StringUtils;
 import java.util.Arrays;
 import java.util.function.Function;
@@ -14,7 +16,7 @@ public class InputView {
     public int readDay() {
         return getInput(input -> {
             if (!StringUtils.isDigit(input)) {
-                throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+                throw new InputValidationException(ErrorMessages.INVALID_DATE_ERROR);
             }
             return Integer.parseInt(input);
         }, WELCOME, INQUIRY_DATE);
@@ -31,7 +33,7 @@ public class InputView {
             try {
                 String input = Console.readLine();
                 return parser.apply(input);
-            } catch (IllegalArgumentException e) {
+            } catch (InputValidationException e) {
                 System.out.println(e);
             }
         } while (true);

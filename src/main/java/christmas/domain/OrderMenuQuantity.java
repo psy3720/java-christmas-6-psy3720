@@ -1,7 +1,9 @@
 package christmas.domain;
 
+import christmas.common.ErrorMessages;
 import christmas.common.FoodType;
 import christmas.common.Menu;
+import christmas.exception.InputValidationException;
 import christmas.utils.StringUtils;
 import java.util.Objects;
 
@@ -17,15 +19,15 @@ public class OrderMenuQuantity {
 
     private void validate(String quantity, String menu) {
         if (!StringUtils.isDigit(quantity)) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
         if (Integer.parseInt(quantity) < 0) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
         if (Objects.isNull(Menu.of(menu))) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
     }
 
