@@ -2,6 +2,7 @@ package christmas.controller;
 
 import static christmas.dto.request.OrderRequest.createOrderRequest;
 
+import christmas.domain.Day;
 import christmas.domain.OrderItems;
 import christmas.dto.request.OrderRequest;
 import christmas.dto.response.OrderResponse;
@@ -21,7 +22,7 @@ public class ChristmasPromotion {
     }
 
     public void order() {
-        int day = inputView.readDay();
+        Day day = inputView.readDay();
         OrderItems orderItems = inputView.readOrderMenuAndAmount();
         OrderRequest orderRequest = createOrderRequest(day, orderItems);
 

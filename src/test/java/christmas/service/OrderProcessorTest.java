@@ -6,6 +6,7 @@ import static christmas.common.Menu.T_BONE_STEAK;
 import static christmas.common.Menu.ZERO_COLA;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import christmas.domain.Day;
 import christmas.domain.OrderItems;
 import christmas.dto.request.OrderRequest;
 import christmas.dto.response.BenefitDetails;
@@ -18,7 +19,7 @@ public class OrderProcessorTest {
     @DisplayName("주문 시 할인과 증정 이벤트 적용 테스트")
     @Test
     void order() {
-        int day = 3;
+        Day day = Day.createDay("3");
         String input = "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1";
         OrderProcessor orderProcessor = new OrderProcessor();
 

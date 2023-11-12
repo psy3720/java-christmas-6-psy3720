@@ -11,12 +11,12 @@ public class Discount {
         final int start_discount_amount = 1000;
         final int discountPerDay = 100;
 
-        int day = request.getDay();
+        Day day = request.getDay();
         int amount = request.getAmount();
 
         int discountAmount = 0;
-        if (day >= 1 && day <= 25) {
-            int totalDiscount = (day - 1) * discountPerDay;
+        if (day.isChristmasDay()) {
+            int totalDiscount = day.minus(1) * discountPerDay;
             discountAmount = (start_discount_amount + totalDiscount) * -1;
         }
 
@@ -24,12 +24,11 @@ public class Discount {
     }
 
     public DiscountResponse getWeekdayDiscount(DiscountRequest request) {
-        int day = request.getDay();
+        Day day = request.getDay();
         OrderItems orderItems = request.getOrderItems();
         int amount = request.getAmount();
 
-        LocalDate date = LocalDate.of(2023, 12, day);
-
+        LocalDate date = day.getLocalDate();
         final int DISCOUNT_AMOUNT = 2023;
         int discountAmount = 0;
 
@@ -43,11 +42,10 @@ public class Discount {
 
     public DiscountResponse getWeekendDiscount(DiscountRequest request) {
         int amount = request.getAmount();
-        int day = request.getDay();
+        Day day = request.getDay();
         OrderItems orderItems = request.getOrderItems();
 
-        LocalDate date = LocalDate.of(2023, 12, day);
-
+        LocalDate date = day.getLocalDate();
         final int DISCOUNT_AMOUNT = 2023;
         int discountAmount = 0;
 
@@ -59,12 +57,12 @@ public class Discount {
     }
 
     public DiscountResponse getSpecialDiscount(DiscountRequest request) {
-        int day = request.getDay();
+        Day day = request.getDay();
         int amount = request.getAmount();
         int[] specialDays = new int[]{3, 10, 17, 24, 25, 31};
 
         int discountAmount = 0;
-        if (Arrays.stream(specialDays).anyMatch(value -> day == value)) {
+        if (Arrays.stream(specialDays).anyMatch(day::equals)) {
             discountAmount = -1000;
         }
 

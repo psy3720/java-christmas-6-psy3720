@@ -18,7 +18,7 @@ public class DiscountTest {
     void christmasDDayDiscount() {
         Discount discount = new Discount();
 
-        int day = 1;
+        Day day = new Day(1);
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,제로콜라-1");
         DiscountRequest request = new DiscountRequest(day, orderItems,
                 TAPAS.getPrice() + ZERO_COLA.getPrice());
@@ -34,7 +34,7 @@ public class DiscountTest {
     void weekdayDiscount() {
         Discount discount = new Discount();
 
-        int day = 4;
+        Day day = new Day(4);
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1");
 
         DiscountRequest request = new DiscountRequest(day, orderItems,
@@ -50,7 +50,7 @@ public class DiscountTest {
     void weekendDiscount() {
         Discount discount = new Discount();
 
-        int day = 1;
+        Day day = new Day(1);
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1,티본스테이크-2");
 
         DiscountRequest request = new DiscountRequest(day, orderItems, TAPAS.getPrice() +
@@ -72,7 +72,7 @@ public class DiscountTest {
     void specialDiscount() {
         Discount discount = new Discount();
 
-        int day = 25;
+        Day day = new Day(25);
         OrderItems orderItems = OrderItems.createOrderItems("타파스-1,초코케이크-1,티본스테이크-2");
 
         DiscountRequest request = new DiscountRequest(day, orderItems, TAPAS.getPrice() +

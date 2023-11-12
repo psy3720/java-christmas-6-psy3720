@@ -2,6 +2,7 @@ package christmas.service;
 
 import christmas.common.EventBadge;
 import christmas.common.Menu;
+import christmas.domain.Day;
 import christmas.domain.Discount;
 import christmas.domain.OrderItems;
 import christmas.dto.request.DiscountRequest;
@@ -19,7 +20,7 @@ public class OrderProcessor {
     }
 
     public OrderResponse order(OrderRequest request) {
-        int day = request.getDay();
+        Day day = request.getDay();
         OrderItems orderItems = request.getOrderItems();
 
         BenefitDetails benefitDetails = benefitCalculate(day, orderItems);
@@ -29,7 +30,7 @@ public class OrderProcessor {
         return new OrderResponse(orderItems, isGiftMenu, eventBadge, benefitDetails);
     }
 
-    private BenefitDetails benefitCalculate(int day, OrderItems orderItems) {
+    private BenefitDetails benefitCalculate(Day day, OrderItems orderItems) {
         int amount = orderItems.getTotalAmount();
 
         int giftEventAmount = 0;

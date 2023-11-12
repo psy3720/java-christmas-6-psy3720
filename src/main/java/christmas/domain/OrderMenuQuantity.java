@@ -8,6 +8,7 @@ import christmas.utils.StringUtils;
 import java.util.Objects;
 
 public class OrderMenuQuantity {
+    public static final int ORDER_MIN_QUANTITY = 1;
     private int quantity;
     private Menu menu;
 
@@ -22,7 +23,7 @@ public class OrderMenuQuantity {
             throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
-        if (Integer.parseInt(quantity) < 0) {
+        if (Integer.parseInt(quantity) < ORDER_MIN_QUANTITY) {
             throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
