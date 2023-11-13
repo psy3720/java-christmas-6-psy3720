@@ -13,8 +13,10 @@ public enum OutputMessage {
     ORDER_MENU_FORMAT("%s %s개"),
     TOTAL_ORDER_AMOUNT_FORMAT("###,###원"),
     FINAL_PAYMENT_AMOUNT_FORMAT("###,###원"),
+    GIFT_EVENT_FORMAT("###,###원"),
     TOTAL_BENEFIT_AMOUNT_FORMAT("%s원"),
-    NONE_FORMAT("없음");
+    NONE_FORMAT("없음"),
+    GIFT_MENU_FORMAT("샴페인 1개");
 
     private final String message;
 

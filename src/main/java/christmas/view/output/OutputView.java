@@ -5,7 +5,9 @@ import static christmas.view.output.OutputMessage.EVENT_BADGE;
 import static christmas.view.output.OutputMessage.EVENT_PREVIEW_MESSAGE;
 import static christmas.view.output.OutputMessage.FINAL_PAYMENT_AMOUNT;
 import static christmas.view.output.OutputMessage.FINAL_PAYMENT_AMOUNT_FORMAT;
+import static christmas.view.output.OutputMessage.GIFT_EVENT_FORMAT;
 import static christmas.view.output.OutputMessage.GIFT_MENU;
+import static christmas.view.output.OutputMessage.GIFT_MENU_FORMAT;
 import static christmas.view.output.OutputMessage.NONE_FORMAT;
 import static christmas.view.output.OutputMessage.ORDER_MENU;
 import static christmas.view.output.OutputMessage.ORDER_MENU_FORMAT;
@@ -14,6 +16,7 @@ import static christmas.view.output.OutputMessage.TOTAL_BENEFIT_AMOUNT_FORMAT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT_FORMAT;
 
+import christmas.domain.GiftEvent;
 import christmas.domain.OrderItems;
 import christmas.domain.discount.DiscountType;
 import christmas.dto.response.BenefitDetails;
@@ -25,16 +28,14 @@ import java.util.function.Consumer;
 
 public class OutputView {
     private static final String LINE_SEPARATOR = System.lineSeparator();
-
     private StringBuilder output;
 
-    public void printOrder(OrderResponse orderResponse) {
+    public OutputView() {
         output = new StringBuilder();
+    }
 
-        output.append(EVENT_PREVIEW_MESSAGE.getMessage())
-                .append(LINE_SEPARATOR)
-                .append(LINE_SEPARATOR);
-
+    public void printOrder(OrderResponse orderResponse) {
+        appendEventPreview();
         appendOrderMenu(orderResponse);
         appendTotalOrderAmount(orderResponse);
         appendGiftMenu(orderResponse);
@@ -44,6 +45,12 @@ public class OutputView {
         appendEventBadge(orderResponse);
 
         System.out.println(output);
+    }
+
+    private void appendEventPreview() {
+        output.append(EVENT_PREVIEW_MESSAGE.getMessage())
+                .append(LINE_SEPARATOR)
+                .append(LINE_SEPARATOR);
     }
 
     private void append(OutputMessage outputMessage, Consumer<Void> action) {
@@ -77,8 +84,8 @@ public class OutputView {
     private void appendGiftMenu(OrderResponse orderResponse) {
         append(GIFT_MENU, unused -> {
             String giftMenu = NONE_FORMAT.getMessage();
-            if (orderResponse.getGiftMenu()) {
-                giftMenu = "샴페인 1개";
+            if (orderResponse.getGiftMenu().isGiftEvent()) {
+                giftMenu = GIFT_MENU_FORMAT.getMessage();
             }
             output.append(giftMenu)
                     .append(LINE_SEPARATOR);
@@ -89,6 +96,7 @@ public class OutputView {
         append(BENEFIT_HISTORY, unused -> {
             BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
             Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
+            GiftEvent giftMenu = orderResponse.getGiftMenu();
 
             if (orderResponse.getBenefitDetails().getTotalBenefitAmount() == 0) {
                 output.append(NONE_FORMAT.getMessage())
@@ -97,6 +105,10 @@ public class OutputView {
                 for (DiscountType discountType : discountResults.keySet()) {
                     output.append(String.format(DiscountMessage.getDiscountFormat(discountType),
                                     discountResults.get(discountType)))
+                            .append(LINE_SEPARATOR);
+                }
+                if (giftMenu.isGiftEvent()) {
+                    output.append(String.format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice()))
                             .append(LINE_SEPARATOR);
                 }
             }

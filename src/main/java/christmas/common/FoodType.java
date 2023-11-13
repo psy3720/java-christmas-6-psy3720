@@ -11,8 +11,4 @@ public enum FoodType {
     FoodType(String type) {
         this.type = type;
     }
-
-    public String getType() {
-        return type;
-    }
 }

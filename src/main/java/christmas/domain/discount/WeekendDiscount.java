@@ -30,7 +30,7 @@ public class WeekendDiscount implements DiscountRule {
         discountResults.put(DiscountType.WEEKEND_DISCOUNT, discountAmount);
 
         if (Objects.isNull(nextRule)) {
-            return new DiscountResponse(amount + discountAmount, discountAmount, discountResults);
+            return new DiscountResponse(amount + discountAmount, discountResults);
         } else {
             return nextRule.calculateDiscount(request, discountResults);
         }

@@ -24,7 +24,7 @@ public class SpecialDiscount implements DiscountRule {
         discountResults.put(DiscountType.SPECIAL_DISCOUNT, discountAmount);
 
         if (Objects.isNull(nextRule)) {
-            return new DiscountResponse(amount + discountAmount, discountAmount, discountResults);
+            return new DiscountResponse(amount + discountAmount, discountResults);
         } else {
             return nextRule.calculateDiscount(request, discountResults);
         }

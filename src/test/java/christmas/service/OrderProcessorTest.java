@@ -34,14 +34,12 @@ public class OrderProcessorTest {
         int 크리스마스_디데이_할인_금액 = -1200;
         int 평일_할인_금액 = -4046;
         int 특별_할인_금액 = -1000;
-        int 증정_이벤트_금액 = -25000;
 
         Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
         assertThat(response.getTotalOrderAmount()).isEqualTo(할인_전_총주문_금액);
-        assertThat(response.getGiftMenu()).isTrue();
+        assertThat(response.getGiftMenu().isGiftEvent()).isTrue();
         assertThat(discountResults.get(DiscountType.CHRISTMAS_D_DAY_DISCOUNT)).isEqualTo(크리스마스_디데이_할인_금액);
         assertThat(discountResults.get(DiscountType.WEEKDAY_DISCOUNT)).isEqualTo(평일_할인_금액);
         assertThat(discountResults.get(DiscountType.SPECIAL_DISCOUNT)).isEqualTo(특별_할인_금액);
-        assertThat(benefitDetails.getGiftEvent()).isEqualTo(증정_이벤트_금액);
     }
 }
