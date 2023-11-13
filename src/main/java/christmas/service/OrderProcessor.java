@@ -3,8 +3,8 @@ package christmas.service;
 import christmas.common.EventBadge;
 import christmas.common.Menu;
 import christmas.domain.Day;
-import christmas.domain.Discount;
 import christmas.domain.OrderItems;
+import christmas.domain.discount.Discount;
 import christmas.dto.request.DiscountRequest;
 import christmas.dto.request.OrderRequest;
 import christmas.dto.response.BenefitDetails;
@@ -13,10 +13,9 @@ import christmas.dto.response.OrderResponse;
 
 public class OrderProcessor {
     public static final int DISCOUNT_THRESHOLD_AMOUNT = 120000;
-    private final Discount discount;
 
     public OrderProcessor() {
-        this.discount = new Discount();
+
     }
 
     public OrderResponse order(OrderRequest request) {
@@ -38,24 +37,9 @@ public class OrderProcessor {
             giftEventAmount = Menu.CHAMPAGNE.getPrice() * -1;
         }
 
-        DiscountResponse christmasDDayDiscount = discount.getChristmasDDayDiscount(
-                new DiscountRequest(day, orderItems, amount));
-        DiscountResponse weekdayDiscount = discount.getWeekdayDiscount(
-                new DiscountRequest(day, orderItems,
-                        christmasDDayDiscount.getFinalAmount()));
-        DiscountResponse weekendDiscount = discount.getWeekendDiscount(
-                new DiscountRequest(day, orderItems,
-                        weekdayDiscount.getFinalAmount()));
-        DiscountResponse specialDiscount = discount.getSpecialDiscount(
-                new DiscountRequest(day, orderItems,
-                        weekendDiscount.getFinalAmount()));
+        DiscountResponse discountResponse = Discount.calculateDiscount(new DiscountRequest(day, orderItems, amount));
 
-        return new BenefitDetails(
-                christmasDDayDiscount.getDiscountAmount(),
-                weekdayDiscount.getDiscountAmount(),
-                weekendDiscount.getDiscountAmount(),
-                specialDiscount.getDiscountAmount(),
-                giftEventAmount);
+        return new BenefitDetails(discountResponse.getDiscountResults(), giftEventAmount);
     }
 
     private static boolean isGiftMenu(OrderItems orderItems) {

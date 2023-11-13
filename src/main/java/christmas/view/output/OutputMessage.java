@@ -8,7 +8,13 @@ public enum OutputMessage {
     BENEFIT_HISTORY("<혜택 내역>"),
     TOTAL_BENEFIT_AMOUNT("<총혜택 금액>"),
     FINAL_PAYMENT_AMOUNT("<할인 후 예상 결제 금액>"),
-    EVENT_BADGE("<12월 이벤트 배지>");
+    EVENT_BADGE("<12월 이벤트 배지>"),
+
+    ORDER_MENU_FORMAT("%s %s개"),
+    TOTAL_ORDER_AMOUNT_FORMAT("###,###원"),
+    FINAL_PAYMENT_AMOUNT_FORMAT("###,###원"),
+    TOTAL_BENEFIT_AMOUNT_FORMAT("%s원"),
+    NONE_FORMAT("없음");
 
     private final String message;
 

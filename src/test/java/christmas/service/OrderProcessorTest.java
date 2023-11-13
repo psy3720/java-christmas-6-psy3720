@@ -8,9 +8,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import christmas.domain.Day;
 import christmas.domain.OrderItems;
+import christmas.domain.discount.DiscountType;
 import christmas.dto.request.OrderRequest;
 import christmas.dto.response.BenefitDetails;
 import christmas.dto.response.OrderResponse;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,11 +36,12 @@ public class OrderProcessorTest {
         int 특별_할인_금액 = -1000;
         int 증정_이벤트_금액 = -25000;
 
+        Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
         assertThat(response.getTotalOrderAmount()).isEqualTo(할인_전_총주문_금액);
         assertThat(response.getGiftMenu()).isTrue();
-        assertThat(benefitDetails.getChristmasDDayDiscount()).isEqualTo(크리스마스_디데이_할인_금액);
-        assertThat(benefitDetails.getWeekdayDiscount()).isEqualTo(평일_할인_금액);
-        assertThat(benefitDetails.getSpecialDiscount()).isEqualTo(특별_할인_금액);
+        assertThat(discountResults.get(DiscountType.CHRISTMAS_D_DAY_DISCOUNT)).isEqualTo(크리스마스_디데이_할인_금액);
+        assertThat(discountResults.get(DiscountType.WEEKDAY_DISCOUNT)).isEqualTo(평일_할인_금액);
+        assertThat(discountResults.get(DiscountType.SPECIAL_DISCOUNT)).isEqualTo(특별_할인_금액);
         assertThat(benefitDetails.getGiftEvent()).isEqualTo(증정_이벤트_금액);
     }
 }
