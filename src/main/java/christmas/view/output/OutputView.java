@@ -14,94 +14,120 @@ import christmas.dto.response.BenefitDetails;
 import christmas.dto.response.OrderResponse;
 import java.text.DecimalFormat;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class OutputView {
+    private static final String LINE_SEPARATOR = System.lineSeparator();
+    private StringBuilder output;
+
     public void printOrder(OrderResponse orderResponse) {
-        System.out.println(EVENT_PREVIEW_MESSAGE.getMessage());
-        printEmptyLine();
+        output = new StringBuilder();
 
-        printOrderMenu(orderResponse);
-        printTotalOrderAmount(orderResponse);
-        printGiftMenu(orderResponse);
-        printBenefitHistory(orderResponse);
-        printTotalBenefitAmount(orderResponse);
-        printFinalPaymentAmount(orderResponse);
-        printEventBadge(orderResponse);
+        output.append(EVENT_PREVIEW_MESSAGE.getMessage())
+                .append(LINE_SEPARATOR)
+                .append(LINE_SEPARATOR);
+
+        appendOrderMenu(orderResponse);
+        appendTotalOrderAmount(orderResponse);
+        appendGiftMenu(orderResponse);
+        appendBenefitHistory(orderResponse);
+        appendTotalBenefitAmount(orderResponse);
+        appendFinalPaymentAmount(orderResponse);
+        appendEventBadge(orderResponse);
+
+        System.out.println(output);
     }
 
-    private static void printEmptyLine() {
-        System.out.println();
+    private void append(OutputMessage outputMessage, Consumer<Void> action) {
+        output.append(outputMessage.getMessage())
+                .append(LINE_SEPARATOR);
+
+        action.accept(null);
+        output.append(LINE_SEPARATOR);
     }
 
-    private void printEventBadge(OrderResponse orderResponse) {
-        System.out.println(EVENT_BADGE.getMessage());
-        String badge = "없음";
-        if (!Objects.isNull(orderResponse.getEventBadge())) {
-            badge = orderResponse.getEventBadge().getName();
-        }
-        System.out.println(badge);
-        printEmptyLine();
+    private void appendOrderMenu(OrderResponse orderResponse) {
+        append(ORDER_MENU, unused -> {
+            OrderItems orderMenus = orderResponse.getOrderMenus();
+            orderMenus.getOrderMenus().stream()
+                    .forEach(orderMenuQuantity -> output.append(
+                            String.format("%s %s개",
+                                    orderMenuQuantity.getMenuName(),
+                                    orderMenuQuantity.getQuantity())
+                    ));
+        });
     }
 
-    private void printFinalPaymentAmount(OrderResponse orderResponse) {
-        System.out.println(FINAL_PAYMENT_AMOUNT.getMessage());
-        System.out.println(orderResponse.getFinalPaymentAmount());
-        printEmptyLine();
+    private void appendTotalOrderAmount(OrderResponse orderResponse) {
+        append(TOTAL_ORDER_AMOUNT, unused -> {
+            DecimalFormat df = new DecimalFormat("###,###원");
+            output.append(df.format(orderResponse.getTotalOrderAmount()))
+                    .append(LINE_SEPARATOR);
+        });
     }
 
-    private void printTotalBenefitAmount(OrderResponse orderResponse) {
-        System.out.println(TOTAL_BENEFIT_AMOUNT.getMessage());
-        System.out.printf("%s원\n", orderResponse.getBenefitDetails().getTotalBenefitAmount());
-        printEmptyLine();
+    private void appendGiftMenu(OrderResponse orderResponse) {
+        append(GIFT_MENU, unused -> {
+            String giftMenu = "없음";
+            if (orderResponse.getGiftMenu()) {
+                giftMenu = "샴페인 1개";
+            }
+            output.append(giftMenu)
+                    .append(LINE_SEPARATOR);
+        });
     }
 
-    private void printBenefitHistory(OrderResponse orderResponse) {
-        System.out.println(BENEFIT_HISTORY.getMessage());
-        BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
+    private void appendBenefitHistory(OrderResponse orderResponse) {
+        append(BENEFIT_HISTORY, unused -> {
+            BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
+            boolean isBenefit = false;
+            if (benefitDetails.getChristmasDDayDiscount() > 0) {
+                output.append(String.format("크리스마스 디데이 할인: %,d원", benefitDetails.getChristmasDDayDiscount()))
+                        .append(LINE_SEPARATOR);
+                isBenefit = true;
+            }
 
-        boolean isBenefit = false;
-        if (benefitDetails.getChristmasDDayDiscount() > 0) {
-            System.out.printf("크리스마스 디데이 할인: %,d원", benefitDetails.getChristmasDDayDiscount());
-            isBenefit = true;
-        }
+            if (benefitDetails.getWeekdayDiscount() > 0) {
+                output.append(String.format("평일 할인: %,d원", benefitDetails.getWeekdayDiscount()))
+                        .append(LINE_SEPARATOR);
+                isBenefit = true;
+            }
 
-        if (benefitDetails.getWeekdayDiscount() > 0) {
-            System.out.printf("평일 할인: %,d원", benefitDetails.getWeekdayDiscount());
-            isBenefit = true;
-        }
+            if (benefitDetails.getWeekendDiscount() > 0) {
+                output.append(String.format("주말 할인: %,d원", benefitDetails.getWeekendDiscount()))
+                        .append(LINE_SEPARATOR);
+                isBenefit = true;
+            }
 
-        if (!isBenefit) {
-            System.out.println("없음");
-        }
-        printEmptyLine();
+            if (!isBenefit) {
+                output.append("없음")
+                        .append(LINE_SEPARATOR);
+            }
+        });
     }
 
-    private void printGiftMenu(OrderResponse orderResponse) {
-        System.out.println(GIFT_MENU.getMessage());
-
-        String giftMenu = "없음";
-
-        if (orderResponse.getGiftMenu()) {
-            giftMenu = "샴페인 1개";
-        }
-        System.out.println(giftMenu);
-        printEmptyLine();
+    private void appendTotalBenefitAmount(OrderResponse orderResponse) {
+        append(TOTAL_BENEFIT_AMOUNT, unused -> {
+            output.append(String.format("%s원", orderResponse.getBenefitDetails().getTotalBenefitAmount()))
+                    .append(LINE_SEPARATOR);
+        });
     }
 
-    private void printTotalOrderAmount(OrderResponse orderResponse) {
-        System.out.println(TOTAL_ORDER_AMOUNT.getMessage());
-        DecimalFormat df = new DecimalFormat("###,###원");
-        System.out.println(df.format(orderResponse.getTotalOrderAmount()));
-        printEmptyLine();
+    private void appendFinalPaymentAmount(OrderResponse orderResponse) {
+        append(FINAL_PAYMENT_AMOUNT, unused -> {
+            output.append(orderResponse.getFinalPaymentAmount())
+                    .append(LINE_SEPARATOR);
+        });
     }
 
-    private void printOrderMenu(OrderResponse orderResponse) {
-        System.out.println(ORDER_MENU.getMessage());
-        OrderItems orderMenus = orderResponse.getOrderMenus();
-
-        orderMenus.getOrderMenus().stream()
-                .forEach(orderMenuQuantity -> System.out.printf("%s %s개\n", orderMenuQuantity.getMenuName(),
-                        orderMenuQuantity.getQuantity()));
-        printEmptyLine();
+    private void appendEventBadge(OrderResponse orderResponse) {
+        append(EVENT_BADGE, unused -> {
+            String badge = "없음";
+            if (!Objects.isNull(orderResponse.getEventBadge())) {
+                badge = orderResponse.getEventBadge().getName();
+            }
+            output.append(badge)
+                    .append(LINE_SEPARATOR);
+        });
     }
 }
