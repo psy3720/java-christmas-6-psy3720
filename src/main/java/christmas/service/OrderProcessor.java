@@ -12,9 +12,6 @@ import christmas.dto.response.DiscountResponse;
 import christmas.dto.response.OrderResponse;
 
 public class OrderProcessor {
-    public OrderProcessor() {
-
-    }
 
     public OrderResponse order(OrderRequest request) {
         Day day = request.getDay();

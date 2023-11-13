@@ -1,6 +1,7 @@
 package christmas.dto.response;
 
 import christmas.domain.discount.DiscountType;
+import java.util.Collections;
 import java.util.Map;
 
 public class DiscountResponse {
@@ -17,6 +18,6 @@ public class DiscountResponse {
     }
 
     public Map<DiscountType, Integer> getDiscountResults() {
-        return discountResults;
+        return Collections.unmodifiableMap(discountResults);
     }
 }

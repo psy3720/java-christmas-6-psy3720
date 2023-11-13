@@ -1,5 +1,6 @@
 package christmas.view.output;
 
+import static christmas.view.output.DiscountMessage.getDiscountFormat;
 import static christmas.view.output.OutputMessage.BENEFIT_HISTORY;
 import static christmas.view.output.OutputMessage.EVENT_BADGE;
 import static christmas.view.output.OutputMessage.EVENT_PREVIEW_MESSAGE;
@@ -15,6 +16,7 @@ import static christmas.view.output.OutputMessage.TOTAL_BENEFIT_AMOUNT;
 import static christmas.view.output.OutputMessage.TOTAL_BENEFIT_AMOUNT_FORMAT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT;
 import static christmas.view.output.OutputMessage.TOTAL_ORDER_AMOUNT_FORMAT;
+import static java.lang.String.format;
 
 import christmas.domain.GiftEvent;
 import christmas.domain.OrderItems;
@@ -66,7 +68,7 @@ public class OutputView {
             OrderItems orderMenus = orderResponse.getOrderMenus();
             orderMenus.getOrderMenus().stream()
                     .forEach(orderMenuQuantity -> output.append(
-                            String.format(ORDER_MENU_FORMAT.getMessage(),
+                            format(ORDER_MENU_FORMAT.getMessage(),
                                     orderMenuQuantity.getMenuName(),
                                     orderMenuQuantity.getQuantity())
                     ));
@@ -93,31 +95,41 @@ public class OutputView {
     }
 
     private void appendBenefitHistory(OrderResponse orderResponse) {
-        append(BENEFIT_HISTORY, unused -> {
-            BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
-            Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
-            GiftEvent giftMenu = orderResponse.getGiftMenu();
+        appendDiscountHistory(orderResponse);
+        appendGiftEvent(orderResponse);
+    }
 
-            if (orderResponse.getBenefitDetails().getTotalBenefitAmount() == 0) {
-                output.append(NONE_FORMAT.getMessage())
-                        .append(LINE_SEPARATOR);
-            } else {
-                for (DiscountType discountType : discountResults.keySet()) {
-                    output.append(String.format(DiscountMessage.getDiscountFormat(discountType),
-                                    discountResults.get(discountType)))
-                            .append(LINE_SEPARATOR);
-                }
-                if (giftMenu.isGiftEvent()) {
-                    output.append(String.format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice()))
-                            .append(LINE_SEPARATOR);
-                }
-            }
-        });
+    private void appendDiscountHistory(OrderResponse orderResponse) {
+        output.append(BENEFIT_HISTORY.getMessage())
+                .append(LINE_SEPARATOR);
+
+        BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
+        Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
+
+        if (orderResponse.getBenefitDetails().getTotalBenefitAmount() == 0) {
+            output.append(NONE_FORMAT.getMessage())
+                    .append(LINE_SEPARATOR);
+            return;
+        }
+
+        for (DiscountType discountType : discountResults.keySet()) {
+            output.append(format(getDiscountFormat(discountType), discountResults.get(discountType)))
+                    .append(LINE_SEPARATOR);
+        }
+    }
+
+    private void appendGiftEvent(OrderResponse orderResponse) {
+        GiftEvent giftMenu = orderResponse.getGiftMenu();
+
+        if (giftMenu.isGiftEvent()) {
+            output.append(format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice()))
+                    .append(LINE_SEPARATOR);
+        }
     }
 
     private void appendTotalBenefitAmount(OrderResponse orderResponse) {
         append(TOTAL_BENEFIT_AMOUNT, unused -> {
-            output.append(String.format(TOTAL_BENEFIT_AMOUNT_FORMAT.getMessage(),
+            output.append(format(TOTAL_BENEFIT_AMOUNT_FORMAT.getMessage(),
                             orderResponse.getBenefitDetails().getTotalBenefitAmount()))
                     .append(LINE_SEPARATOR);
         });
@@ -126,7 +138,7 @@ public class OutputView {
     private void appendFinalPaymentAmount(OrderResponse orderResponse) {
         append(FINAL_PAYMENT_AMOUNT, unused -> {
             output.append(
-                            String.format(FINAL_PAYMENT_AMOUNT_FORMAT.getMessage()
+                            format(FINAL_PAYMENT_AMOUNT_FORMAT.getMessage()
                                     , orderResponse.getFinalPaymentAmount()))
                     .append(LINE_SEPARATOR);
         });
