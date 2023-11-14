@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class WeekendDiscount implements DiscountRule {
     private DiscountRule nextRule;
+    static final int DISCOUNT_AMOUNT = 2023;
 
     @Override
     public DiscountResponse calculateDiscount(DiscountRequest request, Map<DiscountType, Integer> discountResults) {
@@ -19,14 +20,12 @@ public class WeekendDiscount implements DiscountRule {
         OrderItems orderItems = request.getOrderItems();
 
         LocalDate date = day.getLocalDate();
-        final int DISCOUNT_AMOUNT = 2023;
         int discountAmount = 0;
 
         DayOfWeek dayOfWeek = date.getDayOfWeek();
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) {
+        if (isWeekend(dayOfWeek)) {
             discountAmount = (orderItems.getMainMenuQuantity() * DISCOUNT_AMOUNT * -1);
         }
-
         discountResults.put(DiscountType.WEEKEND_DISCOUNT, discountAmount);
 
         if (Objects.isNull(nextRule)) {
@@ -34,6 +33,10 @@ public class WeekendDiscount implements DiscountRule {
         } else {
             return nextRule.calculateDiscount(request, discountResults);
         }
+    }
+
+    private static boolean isWeekend(DayOfWeek dayOfWeek) {
+        return dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY;
     }
 
     @Override

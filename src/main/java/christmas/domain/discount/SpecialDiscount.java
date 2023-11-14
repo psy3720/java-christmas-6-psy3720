@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SpecialDiscount implements DiscountRule {
+    public static final int SPECIAL_DISCOUNT_AMOUNT = -1000;
+    private int[] specialDays = new int[]{3, 10, 17, 24, 25, 31};
     private DiscountRule nextRule;
 
     @Override
     public DiscountResponse calculateDiscount(DiscountRequest request, Map<DiscountType, Integer> discountResults) {
         Day day = request.getDay();
         int amount = request.getAmount();
-        int[] specialDays = new int[]{3, 10, 17, 24, 25, 31};
 
         int discountAmount = 0;
-        if (Arrays.stream(specialDays).anyMatch(day::equals)) {
-            discountAmount = -1000;
+        if (isSpecialDay(day, specialDays)) {
+            discountAmount = SPECIAL_DISCOUNT_AMOUNT;
         }
-
         discountResults.put(DiscountType.SPECIAL_DISCOUNT, discountAmount);
 
         if (Objects.isNull(nextRule)) {
@@ -28,6 +28,10 @@ public class SpecialDiscount implements DiscountRule {
         } else {
             return nextRule.calculateDiscount(request, discountResults);
         }
+    }
+
+    private static boolean isSpecialDay(Day day, int[] specialDays) {
+        return Arrays.stream(specialDays).anyMatch(day::equals);
     }
 
     @Override

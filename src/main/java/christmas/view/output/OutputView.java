@@ -99,6 +99,10 @@ public class OutputView {
         appendGiftEvent(orderResponse);
     }
 
+    private static boolean isBenefitAmount(OrderResponse orderResponse) {
+        return orderResponse.getBenefitDetails().getTotalBenefitAmount() != 0;
+    }
+
     private void appendDiscountHistory(OrderResponse orderResponse) {
         output.append(BENEFIT_HISTORY.getMessage())
                 .append(LINE_SEPARATOR);
@@ -106,7 +110,7 @@ public class OutputView {
         BenefitDetails benefitDetails = orderResponse.getBenefitDetails();
         Map<DiscountType, Integer> discountResults = benefitDetails.getDiscountResults();
 
-        if (orderResponse.getBenefitDetails().getTotalBenefitAmount() == 0) {
+        if (!isBenefitAmount(orderResponse)) {
             output.append(NONE_FORMAT.getMessage())
                     .append(LINE_SEPARATOR);
             return;
@@ -120,7 +124,6 @@ public class OutputView {
 
     private void appendGiftEvent(OrderResponse orderResponse) {
         GiftEvent giftMenu = orderResponse.getGiftMenu();
-
         if (giftMenu.isGiftEvent()) {
             output.append(format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice()))
                     .append(LINE_SEPARATOR);
