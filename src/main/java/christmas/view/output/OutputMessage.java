@@ -12,9 +12,9 @@ public enum OutputMessage {
 
     ORDER_MENU_FORMAT("%s %s개"),
     TOTAL_ORDER_AMOUNT_FORMAT("###,###원"),
-    FINAL_PAYMENT_AMOUNT_FORMAT("###,###원"),
-    GIFT_EVENT_FORMAT("###,###원"),
-    TOTAL_BENEFIT_AMOUNT_FORMAT("%s원"),
+    FINAL_PAYMENT_AMOUNT_FORMAT("%,d원"),
+    GIFT_EVENT_FORMAT("증정 이벤트: %,d원"),
+    TOTAL_BENEFIT_AMOUNT_FORMAT("%,d원"),
     NONE_FORMAT("없음"),
     GIFT_MENU_FORMAT("샴페인 1개");
 

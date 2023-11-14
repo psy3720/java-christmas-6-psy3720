@@ -22,7 +22,7 @@ public enum EventBadge {
 
     public static EventBadge getBadgeBenefitAmount(int benefitAmount) {
         return Arrays.stream(values())
-                .filter(eventBadge -> eventBadge.benefitAmount <= benefitAmount)
+                .filter(eventBadge -> eventBadge.benefitAmount <= Math.abs(benefitAmount))
                 .findFirst()
                 .orElse(NONE);
     }

@@ -10,12 +10,12 @@ public class OrderResponse {
     private BenefitDetails benefitDetails;
     private EventBadge eventBadge;
 
-    public OrderResponse(OrderItems orderMenus, GiftEvent giftEvent, EventBadge eventBadge,
+    public OrderResponse(OrderItems orderMenus, GiftEvent giftEvent,
                          BenefitDetails benefitDetails) {
         this.orderMenus = orderMenus;
-        this.eventBadge = eventBadge;
         this.benefitDetails = benefitDetails;
         this.giftEvent = giftEvent;
+        this.eventBadge = EventBadge.getBadgeBenefitAmount(getBenefitTotalAmount());
     }
 
     public OrderItems getOrderMenus() {
@@ -40,5 +40,15 @@ public class OrderResponse {
 
     public int getFinalPaymentAmount() {
         return orderMenus.getTotalAmount() + benefitDetails.getTotalBenefitAmount();
+    }
+
+    public int getBenefitTotalAmount() {
+        int totalBenefitAmount = benefitDetails.getTotalBenefitAmount();
+
+        if (giftEvent.isGiftEvent()) {
+            totalBenefitAmount += (-1 * giftEvent.getGiftEventMenuPrice());
+        }
+
+        return totalBenefitAmount;
     }
 }

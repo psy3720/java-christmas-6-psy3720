@@ -20,8 +20,7 @@ public class OrderProcessor {
         BenefitDetails benefitDetails = benefitCalculate(day, orderItems);
         GiftEvent giftEvent = new GiftEvent(orderItems);
 
-        EventBadge eventBadge = EventBadge.getBadgeBenefitAmount(benefitDetails.getTotalBenefitAmount());
-        return new OrderResponse(orderItems, giftEvent, eventBadge, benefitDetails);
+        return new OrderResponse(orderItems, giftEvent, benefitDetails);
     }
 
     private BenefitDetails benefitCalculate(Day day, OrderItems orderItems) {

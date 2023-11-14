@@ -66,12 +66,8 @@ public class OutputView {
     private void appendOrderMenu(OrderResponse orderResponse) {
         append(ORDER_MENU, unused -> {
             OrderItems orderMenus = orderResponse.getOrderMenus();
-            orderMenus.getOrderMenus().stream()
-                    .forEach(orderMenuQuantity -> output.append(
-                            format(ORDER_MENU_FORMAT.getMessage(),
-                                    orderMenuQuantity.getMenuName(),
-                                    orderMenuQuantity.getQuantity())
-                    ));
+            output.append(orderMenus.toString());
+            output.append(LINE_SEPARATOR);
         });
     }
 
@@ -112,7 +108,7 @@ public class OutputView {
 
         if (!isBenefitAmount(orderResponse)) {
             output.append(NONE_FORMAT.getMessage())
-                    .append(LINE_SEPARATOR);
+                    .append(LINE_SEPARATOR).append(LINE_SEPARATOR);
             return;
         }
 
@@ -125,7 +121,8 @@ public class OutputView {
     private void appendGiftEvent(OrderResponse orderResponse) {
         GiftEvent giftMenu = orderResponse.getGiftMenu();
         if (giftMenu.isGiftEvent()) {
-            output.append(format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice()))
+            output.append(format(GIFT_EVENT_FORMAT.getMessage(), giftMenu.getGiftEventMenuPrice() * -1))
+                    .append(LINE_SEPARATOR)
                     .append(LINE_SEPARATOR);
         }
     }
@@ -133,7 +130,7 @@ public class OutputView {
     private void appendTotalBenefitAmount(OrderResponse orderResponse) {
         append(TOTAL_BENEFIT_AMOUNT, unused -> {
             output.append(format(TOTAL_BENEFIT_AMOUNT_FORMAT.getMessage(),
-                            orderResponse.getBenefitDetails().getTotalBenefitAmount()))
+                            orderResponse.getBenefitTotalAmount()))
                     .append(LINE_SEPARATOR);
         });
     }

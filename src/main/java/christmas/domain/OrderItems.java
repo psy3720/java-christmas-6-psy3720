@@ -3,8 +3,10 @@ package christmas.domain;
 import christmas.common.ErrorMessages;
 import christmas.exception.InputValidationException;
 import christmas.exception.OrderQuantityExceededException;
+import christmas.view.output.OutputMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderItems {
     public static final String MENU_SEPARATOR = ",";
@@ -83,5 +85,12 @@ public class OrderItems {
                 .filter(OrderMenuQuantity::isMainMenu)
                 .mapToInt(OrderMenuQuantity::getQuantity)
                 .sum();
+    }
+
+    public String toString() {
+        return orderMenus.stream().map(orderMenuQuantity -> String.format(OutputMessage.ORDER_MENU_FORMAT.getMessage(),
+                        orderMenuQuantity.getMenuName(),
+                        orderMenuQuantity.getQuantity()))
+                .collect(Collectors.joining(","));
     }
 }
