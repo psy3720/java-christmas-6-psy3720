@@ -1,10 +1,12 @@
 package christmas.domain;
 
+import static christmas.utils.StringUtils.isDigit;
+import static java.util.Objects.isNull;
+
 import christmas.common.ErrorMessages;
 import christmas.common.FoodType;
 import christmas.common.Menu;
 import christmas.exception.InputValidationException;
-import christmas.utils.StringUtils;
 import java.util.Objects;
 
 public class OrderMenuQuantity {
@@ -19,17 +21,21 @@ public class OrderMenuQuantity {
     }
 
     private void validate(String quantity, String menu) {
-        if (!StringUtils.isDigit(quantity)) {
+        if (!isDigit(quantity)) {
             throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
-        if (Integer.parseInt(quantity) < ORDER_MIN_QUANTITY) {
+        if (isOrderMinQuantity(quantity)) {
             throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
 
-        if (Objects.isNull(Menu.of(menu))) {
+        if (isNull(Menu.of(menu))) {
             throw new InputValidationException(ErrorMessages.INVALID_ORDER_ERROR);
         }
+    }
+
+    private static boolean isOrderMinQuantity(String quantity) {
+        return Integer.parseInt(quantity) < ORDER_MIN_QUANTITY;
     }
 
     public String getMenuName() {

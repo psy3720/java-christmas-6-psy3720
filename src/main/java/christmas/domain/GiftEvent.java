@@ -8,9 +8,13 @@ public class GiftEvent {
     private Menu giftMenu;
 
     public GiftEvent(OrderItems orderItems) {
-        if (orderItems.getTotalAmount() >= DISCOUNT_THRESHOLD_AMOUNT) {
+        if (isTotalAmountAboveDiscountThreshold(orderItems)) {
             giftMenu = Menu.CHAMPAGNE;
         }
+    }
+
+    private static boolean isTotalAmountAboveDiscountThreshold(OrderItems orderItems) {
+        return orderItems.getTotalAmount() >= DISCOUNT_THRESHOLD_AMOUNT;
     }
 
     public boolean isGiftEvent() {

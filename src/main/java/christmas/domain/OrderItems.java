@@ -30,9 +30,13 @@ public class OrderItems {
                 .mapToInt(orderMenuQuantity -> orderMenuQuantity.getQuantity())
                 .sum();
 
-        if (totalOrderQuantity > MAX_ORDER_QUANTITY) {
+        if (isMaxOrderQuantity(totalOrderQuantity)) {
             throw new OrderQuantityExceededException(ErrorMessages.ORDER_QUANTITY_EXCEEDED);
         }
+    }
+
+    private static boolean isMaxOrderQuantity(int totalOrderQuantity) {
+        return totalOrderQuantity > MAX_ORDER_QUANTITY;
     }
 
     private static List<OrderMenuQuantity> convertOrderItems(String orderItems) {
