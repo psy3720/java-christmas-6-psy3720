@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.common.ErrorMessages;
+import christmas.common.FoodType;
 import christmas.exception.InputValidationException;
 import christmas.exception.OrderQuantityExceededException;
 import christmas.view.output.OutputMessage;
@@ -28,13 +29,26 @@ public class OrderItems {
     }
 
     private static void validate(List<OrderMenuQuantity> orderMenuQuantities) {
-        int totalOrderQuantity = orderMenuQuantities.stream()
-                .mapToInt(orderMenuQuantity -> orderMenuQuantity.getQuantity())
-                .sum();
+        int totalOrderQuantity = getTotalOrderQuantity(orderMenuQuantities);
 
         if (isMaxOrderQuantity(totalOrderQuantity)) {
             throw new OrderQuantityExceededException(ErrorMessages.ORDER_QUANTITY_EXCEEDED);
         }
+
+        if(isOrderAllDrink(orderMenuQuantities)) {
+            throw new OrderQuantityExceededException(ErrorMessages.INVALID_ORDER_ERROR);
+        }
+    }
+
+    private static boolean isOrderAllDrink(List<OrderMenuQuantity> orderMenuQuantities) {
+        return orderMenuQuantities.stream()
+                .allMatch(orderMenuQuantity -> orderMenuQuantity.getFoodType() == FoodType.DRINK);
+    }
+
+    private static int getTotalOrderQuantity(List<OrderMenuQuantity> orderMenuQuantities) {
+        return orderMenuQuantities.stream()
+                .mapToInt(orderMenuQuantity -> orderMenuQuantity.getQuantity())
+                .sum();
     }
 
     private static boolean isMaxOrderQuantity(int totalOrderQuantity) {
@@ -91,6 +105,6 @@ public class OrderItems {
         return orderMenus.stream().map(orderMenuQuantity -> String.format(OutputMessage.ORDER_MENU_FORMAT.getMessage(),
                         orderMenuQuantity.getMenuName(),
                         orderMenuQuantity.getQuantity()))
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining("\n"));
     }
 }
